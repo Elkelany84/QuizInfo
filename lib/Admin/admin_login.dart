@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz_info/pages/add_quiz.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({super.key});
@@ -83,11 +85,68 @@ class _AdminLoginState extends State<AdminLogin> {
                                   return null;
                                 },
                                 decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "UserName",
-                                    hintStyle: TextStyle(
-                                        color: Color.fromARGB(
-                                            255, 160, 160, 147))),
+                                  border: InputBorder.none,
+                                  hintText: "UserName",
+                                  hintStyle: TextStyle(
+                                    color: Color.fromARGB(255, 160, 160, 147),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              padding:
+                                  EdgeInsets.only(left: 20, bottom: 5, top: 5),
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              // height: MediaQuery.of(context).size.height,
+                              // width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Color.fromARGB(255, 160, 160, 147)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: TextFormField(
+                                controller: passwordController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please Your Password";
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Password",
+                                  hintStyle: TextStyle(
+                                    color: Color.fromARGB(255, 160, 160, 147),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                loginAdmin();
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 12),
+                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Text(
+                                    "LogIn",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -102,5 +161,39 @@ class _AdminLoginState extends State<AdminLogin> {
         ),
       ),
     );
+  }
+
+  loginAdmin() {
+    FirebaseFirestore.instance.collection("Admin").get().then((snapshot) {
+      snapshot.docs.forEach((result) {
+        if (result.data()["id"] !=
+            userNameController.text.trim().toLowerCase()) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Your id is Not Correct",
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          );
+        } else if (result.data()["password"] !=
+            passwordController.text.trim()) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Your password is Not Correct",
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          );
+        } else {
+          Route route = MaterialPageRoute(builder: (context) => AddQuiz());
+          Navigator.pushReplacement(
+            context,
+            route,
+          );
+        }
+      });
+    });
   }
 }
