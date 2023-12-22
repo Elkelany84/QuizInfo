@@ -8,6 +8,8 @@ class AdminLogin extends StatefulWidget {
 }
 
 class _AdminLoginState extends State<AdminLogin> {
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +46,54 @@ class _AdminLoginState extends State<AdminLogin> {
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
                     ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Material(
+                      elevation: 3,
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 2.2,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Container(
+                              padding:
+                                  EdgeInsets.only(left: 20, bottom: 5, top: 5),
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              // height: MediaQuery.of(context).size.height,
+                              // width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Color.fromARGB(255, 160, 160, 147)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: TextFormField(
+                                controller: userNameController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please Enter Username";
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "UserName",
+                                    hintStyle: TextStyle(
+                                        color: Color.fromARGB(
+                                            255, 160, 160, 147))),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
