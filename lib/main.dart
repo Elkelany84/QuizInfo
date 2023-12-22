@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_info/Admin/admin_login.dart';
 import 'package:quiz_info/pages/home.dart';
 import 'package:quiz_info/pages/question.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -34,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Question(),
+      home: const AdminLogin(),
     );
   }
 }
