@@ -21,7 +21,7 @@ class _AddQuizState extends State<AddQuiz> {
 
   //Get Image from gallery
   Future getImage() async {
-    var image = await _picker.pickImage(source: ImageSource.gallery);
+    var image = await _picker.pickImage(source: ImageSource.camera);
     selectedImage = File(image!.path);
     setState(() {});
   }
@@ -48,10 +48,11 @@ class _AddQuizState extends State<AddQuiz> {
       };
       await DatabaseMethods().addQuizCategory(addQuiz, value!).then((value) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.orangeAccent,
             content: Text(
-          "Quiz has been added Successfully!",
-          style: TextStyle(fontSize: 18),
-        )));
+              "Quiz has been added Successfully!",
+              style: TextStyle(fontSize: 18),
+            )));
       });
     }
   }
@@ -134,9 +135,12 @@ class _AddQuizState extends State<AddQuiz> {
                                   Border.all(color: Colors.black, width: 1.5),
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Image.file(
-                              selectedImage!,
-                              fit: BoxFit.cover,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.file(
+                                selectedImage!,
+                                fit: BoxFit.cover,
+                              ),
                             )),
                       ),
                     ),
@@ -303,24 +307,29 @@ class _AddQuizState extends State<AddQuiz> {
               SizedBox(
                 height: 30,
               ),
-              Center(
-                child: Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    width: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Add",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold),
+              GestureDetector(
+                onTap: () {
+                  uploadImage();
+                },
+                child: Center(
+                  child: Material(
+                    elevation: 5,
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Add",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   ),
