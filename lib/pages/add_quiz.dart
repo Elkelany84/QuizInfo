@@ -1,6 +1,11 @@
+import 'dart:io';
+// import 'dart:html';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:quiz_info/database/database.dart';
 import 'package:random_string/random_string.dart';
 
 class AddQuiz extends StatefulWidget {
@@ -11,6 +16,46 @@ class AddQuiz extends StatefulWidget {
 }
 
 class _AddQuizState extends State<AddQuiz> {
+  ImagePicker _picker = ImagePicker();
+  File? selectedImage;
+
+  //Get Image from gallery
+  Future getImage() async {
+    var image = await _picker.pickImage(source: ImageSource.gallery);
+    selectedImage = File(image!.path);
+    setState(() {});
+  }
+
+//Upload Image to Firebasestorage
+  uploadImage() async {
+    if (selectedImage != null &&
+        firstOption.text != "" &&
+        secondOption.text != "" &&
+        thirdOption.text != "" &&
+        fourthOption.text != "") {
+      String addId = randomAlphaNumeric(10);
+      Reference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child("blogImage").child(addId);
+      final UploadTask task = firebaseStorageRef.putFile(selectedImage!);
+      var downloadImageUrl = await (await task).ref.getDownloadURL();
+      Map<String, dynamic> addQuiz = {
+        "image": downloadImageUrl,
+        "option1": firstOption.text,
+        "option2": secondOption.text,
+        "option3": thirdOption.text,
+        "option4": fourthOption.text,
+        "correct answer": correctOption.text
+      };
+      await DatabaseMethods().addQuizCategory(addQuiz, value!).then((value) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Quiz has been added Successfully!",
+          style: TextStyle(fontSize: 18),
+        )));
+      });
+    }
+  }
+
   String? value;
   final List<String> categoriesItems = [
     "Animals",
@@ -52,24 +97,49 @@ class _AddQuizState extends State<AddQuiz> {
               SizedBox(
                 height: 20,
               ),
-              Center(
-                child: Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1.5),
-                      borderRadius: BorderRadius.circular(20),
+              selectedImage == null
+                  ? GestureDetector(
+                      onTap: () {
+                        getImage();
+                      },
+                      child: Center(
+                        child: Material(
+                          elevation: 5,
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            width: 150,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black, width: 1.5),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Icon(
+                              Icons.camera_alt_outlined,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Center(
+                      child: Material(
+                        elevation: 5,
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                            width: 150,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black, width: 1.5),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Image.file(
+                              selectedImage!,
+                              fit: BoxFit.cover,
+                            )),
+                      ),
                     ),
-                    child: Icon(
-                      Icons.camera_alt_outlined,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
               SizedBox(
                 height: 20,
               ),
