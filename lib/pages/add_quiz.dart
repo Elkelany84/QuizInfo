@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:random_string/random_string.dart';
 
 class AddQuiz extends StatefulWidget {
   const AddQuiz({super.key});
@@ -8,10 +11,20 @@ class AddQuiz extends StatefulWidget {
 }
 
 class _AddQuizState extends State<AddQuiz> {
+  String? value;
+  final List<String> categoriesItems = [
+    "Animals",
+    "Sports",
+    "Random",
+    "Fruits",
+    "Objects",
+    "Places"
+  ];
   TextEditingController firstOption = TextEditingController();
   TextEditingController secondOption = TextEditingController();
   TextEditingController thirdOption = TextEditingController();
   TextEditingController fourthOption = TextEditingController();
+  TextEditingController correctOption = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,12 +73,34 @@ class _AddQuizState extends State<AddQuiz> {
               SizedBox(
                 height: 20,
               ),
-              Text(
-                "Option1",
-                style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w500),
+              // Text(
+              //   "Option1",
+              //   style: TextStyle(
+              //       color: Colors.black54,
+              //       fontSize: 30,
+              //       fontWeight: FontWeight.w500),
+              // ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Color(0xFFececf8),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TextField(
+                  controller: firstOption,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Enter Option 1",
+                    hintStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 20,
@@ -140,7 +175,7 @@ class _AddQuizState extends State<AddQuiz> {
                 "Correct Answer",
                 style: TextStyle(
                     color: Colors.black54,
-                    fontSize: 30,
+                    fontSize: 25,
                     fontWeight: FontWeight.w500),
               ),
               Container(
@@ -151,13 +186,13 @@ class _AddQuizState extends State<AddQuiz> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextField(
-                  controller: firstOption,
+                  controller: correctOption,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: "Enter Correct Answer",
                     hintStyle: TextStyle(
                         color: Colors.black,
-                        fontSize: 15,
+                        fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -165,6 +200,62 @@ class _AddQuizState extends State<AddQuiz> {
               SizedBox(
                 height: 20,
               ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Color(0xFFececf8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                  items: categoriesItems
+                      .map((item) => DropdownMenuItem(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: TextStyle(fontSize: 18, color: Colors.black),
+                          )))
+                      .toList(),
+                  onChanged: ((value) => setState(() {
+                        this.value = value;
+                      })),
+                  dropdownColor: Colors.white,
+                  hint: Text("Select Category"),
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.black,
+                  ),
+                  iconSize: 36,
+                  value: value,
+                )),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Center(
+                child: Material(
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 5),
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Add",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
