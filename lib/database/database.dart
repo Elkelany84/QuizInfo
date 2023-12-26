@@ -8,6 +8,7 @@ class DatabaseMethods {
         .add(userQuizCategory);
   }
 
+//Get the Categories Quizs
   Future<Stream<QuerySnapshot>> getCategoryQuiz(String category) async {
     return await FirebaseFirestore.instance.collection(category).snapshots();
   }

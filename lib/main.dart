@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:quiz_info/Admin/admin_login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:quiz_info/pages/add_quiz.dart';
+import 'package:quiz_info/pages/home.dart';
+import 'package:quiz_info/pages/question.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const AddQuiz(),
+      home: Home(),
     );
   }
 }

@@ -1,14 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz_info/database/database.dart';
 
 class Question extends StatefulWidget {
-  const Question({super.key});
+  Question({required this.category, super.key});
+  String category;
 
   @override
   State<Question> createState() => _QuestionState();
 }
 
 class _QuestionState extends State<Question> {
+  bool show = false;
+  getOnTheLoad() async {
+    quizStream = await DatabaseMethods().getCategoryQuiz(widget.category);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getOnTheLoad();
+    // TODO: implement initState
+    super.initState();
+  }
+
   Stream? quizStream;
   PageController controller = PageController();
 
@@ -19,7 +34,7 @@ class _QuestionState extends State<Question> {
         if (snapshot.hasData) {
           return PageView.builder(
               controller: controller,
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data.docs.length,
               // itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
                 DocumentSnapshot ds = snapshot.data.docs[index];
@@ -46,78 +61,206 @@ class _QuestionState extends State<Question> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xFF818181), width: 1.5),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Text(
-                              ds['option1'],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 18),
-                            ),
-                          ),
+                        GestureDetector(
+                          onTap: () {
+                            show = true;
+                            setState(() {});
+                          },
+                          child: show
+                              ? Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: ds["correct answer"] ==
+                                                    ds["option1"]
+                                                ? Colors.green
+                                                : Colors.red,
+                                            width: 1.5),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Text(
+                                      ds['option1'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                    ),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Color(0xFF818181),
+                                            width: 1.5),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Text(
+                                      ds['option1'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                    ),
+                                  ),
+                                ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xFF818181), width: 1.5),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Text(
-                              ds['option2'],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 18),
-                            ),
-                          ),
+                        GestureDetector(
+                          onTap: () {
+                            show = true;
+                            setState(() {});
+                          },
+                          child: show
+                              ? Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: ds["correct answer"] ==
+                                                    ds["option2"]
+                                                ? Colors.green
+                                                : Colors.red,
+                                            width: 1.5),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Text(
+                                      ds['option2'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                    ),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Color(0xFF818181),
+                                            width: 1.5),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Text(
+                                      ds['option2'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                    ),
+                                  ),
+                                ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xFF818181), width: 1.5),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Text(
-                              ds['option3'],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 18),
-                            ),
-                          ),
+                        GestureDetector(
+                          onTap: () {
+                            show = true;
+                            setState(() {});
+                          },
+                          child: show
+                              ? Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: ds["correct answer"] ==
+                                                    ds["option3"]
+                                                ? Colors.green
+                                                : Colors.red,
+                                            width: 1.5),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Text(
+                                      ds['option3'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                    ),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Color(0xFF818181),
+                                            width: 1.5),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Text(
+                                      ds['option3'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                    ),
+                                  ),
+                                ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xFF818181), width: 1.5),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Text(
-                              ds['option4'],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 18),
-                            ),
-                          ),
+                        GestureDetector(
+                          onTap: () {
+                            show = true;
+                            setState(() {});
+                          },
+                          child: show
+                              ? Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: ds["correct answer"] ==
+                                                    ds["option4"]
+                                                ? Colors.green
+                                                : Colors.red,
+                                            width: 1.5),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Text(
+                                      ds['option4'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                    ),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Color(0xFF818181),
+                                            width: 1.5),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Text(
+                                      ds['option4'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                    ),
+                                  ),
+                                ),
                         ),
                       ],
                     ),
@@ -160,7 +303,7 @@ class _QuestionState extends State<Question> {
                     width: 120,
                   ),
                   Text(
-                    "Sports",
+                    widget.category,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -172,106 +315,7 @@ class _QuestionState extends State<Question> {
             SizedBox(
               height: 20,
             ),
-            Expanded(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(right: 20.0, left: 20, top: 40),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
-                          "images/ronaldo.jpg",
-                          height: 300,
-                          width: MediaQuery.of(context).size.width,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Container(
-                        padding: EdgeInsets.all(15),
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Color(0xFF818181), width: 1.5),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          "Christiano Ronaldo",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 18),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Container(
-                        padding: EdgeInsets.all(15),
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Color(0xFF818181), width: 1.5),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          "Lionel Messi",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 18),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Container(
-                        padding: EdgeInsets.all(15),
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Color(0xFF818181), width: 1.5),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          "Neymar",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 18),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Container(
-                        padding: EdgeInsets.all(15),
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Color(0xFF818181), width: 1.5),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          "Elninny",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 18),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            Expanded(child: allQuiz()),
           ],
         ),
       ),
