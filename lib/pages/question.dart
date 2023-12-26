@@ -110,7 +110,7 @@ class _QuestionState extends State<Question> {
                                 ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 6,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -161,7 +161,7 @@ class _QuestionState extends State<Question> {
                                 ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 6,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -212,7 +212,7 @@ class _QuestionState extends State<Question> {
                                 ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 6,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -221,7 +221,7 @@ class _QuestionState extends State<Question> {
                           },
                           child: show
                               ? Padding(
-                                  padding: const EdgeInsets.all(15.0),
+                                  padding: const EdgeInsets.all(12.0),
                                   child: Container(
                                     padding: EdgeInsets.all(15),
                                     width: MediaQuery.of(context).size.width,
@@ -262,6 +262,37 @@ class _QuestionState extends State<Question> {
                                   ),
                                 ),
                         ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            show = false;
+                            controller.nextPage(
+                                duration: Duration(milliseconds: 200),
+                                curve: Curves.easeIn);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.black,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    color: Color(0xFF004840),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -284,18 +315,23 @@ class _QuestionState extends State<Question> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 50, left: 20),
+              padding: EdgeInsets.only(top: 40, left: 20),
               child: Row(
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                        color: Color(0xFFf35b32),
-                        borderRadius: BorderRadius.circular(60)),
-                    child: Center(
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                          color: Color(0xFFf35b32),
+                          borderRadius: BorderRadius.circular(60)),
+                      child: Center(
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -313,7 +349,7 @@ class _QuestionState extends State<Question> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 16,
             ),
             Expanded(child: allQuiz()),
           ],
